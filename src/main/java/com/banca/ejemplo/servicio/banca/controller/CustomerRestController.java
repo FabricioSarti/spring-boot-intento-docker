@@ -4,9 +4,12 @@
  */
 package com.banca.ejemplo.servicio.banca.controller;
 
+import com.banca.ejemplo.servicio.banca.entities.Customer;
+import com.banca.ejemplo.servicio.banca.repository.CustomerRepository;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +23,15 @@ import org.springframework.web.bind.annotation.PutMapping;
  * @author sarti
  */
 @RestController
-@RequestMapping("/url")
-public class NewRestController {
+@RequestMapping("/customer")
+public class CustomerRestController {
+
+    @Autowired
+    CustomerRepository customerRepository;
 
     @GetMapping()
-    public List<Object> list() {
-        return null;
+    public List<Customer> list() {
+        return (List<Customer>) customerRepository.findAll();
     }
 
     @GetMapping("/{id}")
@@ -39,8 +45,9 @@ public class NewRestController {
     }
 
     @PostMapping
-    public ResponseEntity<?> post(@RequestBody Object input) {
-        return null;
+    public ResponseEntity<?> post(@RequestBody Customer input) {
+        Customer save = customerRepository.save(input);
+        return ResponseEntity.ok(save);
     }
 
     @DeleteMapping("/{id}")
